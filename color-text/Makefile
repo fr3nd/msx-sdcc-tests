@@ -31,11 +31,19 @@ libsclean:
 
 clean: libsclean
 	find *.rel -type f -not -name 'VDP*' -delete || true
-	rm -f *.com *.asm *.lst *.sym *.bin *.ihx *.lk *.map *.noi
+	rm -f *.com *.asm *.lst *.sym *.bin *.ihx *.lk *.map *.noi *.zip
 	rm -rf bin/
+	rm -rf dsk/
 
-test:
-	openmsx -machine Boosted_MSXturboR_with_IDE -ext msxdos2 -diska ../emulation/msx-dos/ -script ../emulation/boot.tcl -diskb bin/
+test: release
+	openmsx -machine msx2 -ext msxdos2 -diska dsk/ -script ../emulation/boot.tcl
+
+release: all
+	mkdir -p dsk/
+	cp bin/text.com dsk/
+	cp ../emulation/msx-dos/* dsk/
+	7z a text.zip ./dsk/*
+
 
 # vim:ft=make
 #
